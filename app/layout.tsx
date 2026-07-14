@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { AuthProvider } from '@/lib/auth-context'
 import { ScrollToTop } from '@/components/scroll-to-top'
-import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
   title: 'Premium Vehicle Rental Platform',
@@ -33,16 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background scroll-smooth" suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          disableTransitionOnChange
-        >
           <ScrollToTop />
           <AuthProvider>
             {children}
           </AuthProvider>
-        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

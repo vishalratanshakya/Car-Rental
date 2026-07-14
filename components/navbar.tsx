@@ -2,11 +2,10 @@
 
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, LogOut, Settings, Moon, Sun, Bell, HelpCircle, FileText, CreditCard, Home, Search } from 'lucide-react'
+import { Menu, X, LogOut, Settings, Bell, HelpCircle, FileText, CreditCard, Home, Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useAuth } from '@/lib/auth-context'
 import { useRouter, usePathname } from 'next/navigation'
-import { useTheme } from 'next-themes'
 import { searchVehicles, Vehicle } from '@/lib/mock-data'
 
 export function Navbar() {
@@ -16,7 +15,6 @@ export function Navbar() {
   const [searchResults, setSearchResults] = useState<Vehicle[]>([])
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
   const { user, logout } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
@@ -216,18 +214,7 @@ export function Navbar() {
                       </Link>
                     </div>
 
-                    {/* Theme Toggle */}
-                    <div className="border-t border-border py-2 px-4">
-                      <p className="text-xs font-semibold text-muted-foreground mb-2">Theme</p>
-                      <div className="flex gap-2">
-                        <button onClick={() => setTheme('light')} className={`flex-1 px-3 py-1 rounded text-xs font-medium transition-all ${theme === 'light' ? 'bg-primary text-white' : 'bg-muted text-foreground hover:bg-muted/80'}`}>
-                          <Sun size={14} className="mx-auto" />
-                        </button>
-                        <button onClick={() => setTheme('dark')} className={`flex-1 px-3 py-1 rounded text-xs font-medium transition-all ${theme === 'dark' ? 'bg-primary text-white' : 'bg-muted text-foreground hover:bg-muted/80'}`}>
-                          <Moon size={14} className="mx-auto" />
-                        </button>
-                      </div>
-                    </div>
+
 
                     {/* Settings & Logout */}
                     <div className="border-t border-border py-2">
