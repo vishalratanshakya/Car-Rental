@@ -61,10 +61,15 @@ export default function DocumentsPage() {
                   Upload
                 </Button>
               ) : (
-                <Button variant="outline" size="sm">
-                  <Download size={16} className="mr-1" />
-                  Download
-                </Button>
+                <a 
+                  href={`data:text/plain;charset=utf-8,${encodeURIComponent(`Document Details:\nName: ${doc.name}\nStatus: ${doc.status}\nUploaded: ${doc.uploaded}`)}`} 
+                  download={`${doc.name.replace(/\s+/g, '_')}.txt`}
+                >
+                  <Button variant="outline" size="sm">
+                    <Download size={16} className="mr-1" />
+                    Download
+                  </Button>
+                </a>
               )}
             </div>
           </div>

@@ -25,25 +25,27 @@ export function Footer() {
       { label: 'Terms of Service', href: '#' },
       { label: 'Cookie Policy', href: '#' },
       { label: 'Disclaimer', href: '#' }
-    ],
-    Social: [
-      { icon: Share2, label: 'Facebook' },
-      { icon: Share, label: 'Twitter' },
-      { icon: Image, label: 'Instagram' },
-      { icon: LinkIcon, label: 'LinkedIn' },
-    ],
+    ]
   }
+
+  const socialLinks = [
+    { icon: Share2, label: 'Facebook' },
+    { icon: Share, label: 'Twitter' },
+    { icon: Image, label: 'Instagram' },
+    { icon: LinkIcon, label: 'LinkedIn' },
+  ]
 
   return (
     <footer className="bg-card border-t border-border mt-20">
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8">
           {/* Brand */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            className="col-span-2 md:col-span-1"
           >
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
@@ -57,7 +59,7 @@ export function Footer() {
           </motion.div>
 
           {/* Links */}
-          {Object.entries(footerLinks).slice(0, 3).map(([title, links]) => (
+          {Object.entries(footerLinks).map(([title, links]) => (
             <motion.div
               key={title}
               initial={{ opacity: 0, y: 20 }}
@@ -88,7 +90,7 @@ export function Footer() {
           >
             <h3 className="font-semibold text-foreground mb-4">Follow Us</h3>
             <div className="flex gap-4">
-              {footerLinks.Social.map(({ icon: Icon, label }) => (
+              {socialLinks.map(({ icon: Icon, label }) => (
                 <a
                   key={label}
                   href="#"

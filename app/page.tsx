@@ -31,8 +31,8 @@ export default function Page() {
         ]);
         
         setFeaturedVehicles(available.slice(0, 4));
-        setMostPickedVehicles(all.sort((a, b) => b.reviews - a.reviews).slice(0, 4));
-        setPremiumBikes(bikes.slice(0, 4));
+        setMostPickedVehicles(all.filter(v => v.available).sort((a, b) => b.reviews - a.reviews).slice(0, 4));
+        setPremiumBikes(bikes.filter(v => v.available).slice(0, 4));
       } catch (error) {
         console.error("Error fetching homepage data:", error);
       } finally {
@@ -102,7 +102,7 @@ export default function Page() {
       </section>
 
       {/* Feature Grid */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-card/50 relative">
+      <section className="py-10 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-card/50 relative">
         <div className="w-full mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -118,8 +118,8 @@ export default function Page() {
       </section>
 
       {/* Featured Vehicles Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-card/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-card/50">
+        <div className="w-full mx-auto">
           <div className="flex justify-between items-end mb-6 sm:mb-8">
             <div className="pr-4">
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 sm:mb-4">Featured Vehicles</h2>
@@ -154,8 +154,8 @@ export default function Page() {
       </section>
 
       {/* Most Picked Up Vehicles */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="w-full mx-auto">
           <div className="flex justify-between items-center mb-6 sm:mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Most Popular Cars</h2>
             <Link href="/vehicles" className="flex items-center text-primary font-medium hover:text-primary/80 transition-colors group whitespace-nowrap">
@@ -184,8 +184,8 @@ export default function Page() {
       </section>
 
       {/* Premium Bikes & Scooters Section */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-10 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="w-full mx-auto">
           <div className="flex justify-between items-center mb-6 sm:mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Premium Two-Wheelers</h2>
             <Link href="/vehicles?category=bike" className="flex items-center text-primary font-medium hover:text-primary/80 transition-colors group whitespace-nowrap">
@@ -214,7 +214,7 @@ export default function Page() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary to-accent text-white">
+      <section className="py-10 sm:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary to-accent text-white">
         <div className="w-full mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}

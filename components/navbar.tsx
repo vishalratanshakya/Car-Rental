@@ -2,15 +2,20 @@
 
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, LogOut, Settings, Moon, Sun, Bell, HelpCircle, FileText, CreditCard, Home } from 'lucide-react'
+import { Menu, X, LogOut, Settings, Moon, Sun, Bell, HelpCircle, FileText, CreditCard, Home, Search } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useAuth } from '@/lib/auth-context'
 import { useRouter, usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
+import { searchVehicles, Vehicle } from '@/lib/mock-data'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<Vehicle[]>([])
+  const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
   const { theme, setTheme } = useTheme()
   const { user, logout } = useAuth()
   const router = useRouter()
@@ -18,10 +23,19 @@ export function Navbar() {
   const navRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (searchQuery.trim().length > 0) {
+      setSearchResults(searchVehicles(searchQuery))
+    } else {
+      setSearchResults([])
+    }
+  }, [searchQuery])
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
         setIsOpen(false)
         setProfileOpen(false)
+        setIsSearchFocused(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -53,8 +67,49 @@ export function Navbar() {
             <span className="font-bold text-lg text-foreground hidden sm:inline">DriveHub</span>
           </Link>
 
+          {/* Mobile Search */}
+          <div className="md:hidden flex-1 mx-2 relative">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input 
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                className="w-full pl-9 pr-4 py-2 bg-muted/50 border-2 border-primary rounded-full text-sm focus:outline-none transition-all"
+              />
+            </div>
+            {isSearchFocused && searchQuery.length > 0 && searchResults.length > 0 && (
+              <div className="absolute top-full mt-2 -left-4 -right-16 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50 max-h-60 overflow-y-auto">
+                {searchResults.map(vehicle => (
+                  <Link 
+                    key={vehicle.id} 
+                    href={`/vehicles/${vehicle.id}`}
+                    onClick={() => {
+                      setSearchQuery('')
+                      setIsSearchFocused(false)
+                    }}
+                    className="flex items-center gap-3 p-3 hover:bg-muted transition-colors border-b border-border last:border-0"
+                  >
+                    <img src={vehicle.image} alt={vehicle.name} className="w-10 h-10 object-cover rounded" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground line-clamp-1">{vehicle.name}</p>
+                      <p className="text-xs text-muted-foreground">${vehicle.price}/day</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+            {isSearchFocused && searchQuery.length > 0 && searchResults.length === 0 && (
+              <div className="absolute top-full mt-2 -left-4 -right-16 bg-card border border-border rounded-lg shadow-lg p-4 text-center z-50">
+                <p className="text-sm text-muted-foreground">No vehicles found.</p>
+              </div>
+            )}
+          </div>
+
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8 ml-8 lg:ml-12">
             {menuItems.map((item) => {
               const isActive = pathname === item.href || (item.href !== '/' && item.href !== '#' && pathname.startsWith(item.href))
               return (
@@ -69,6 +124,47 @@ export function Navbar() {
                 </Link>
               )
             })}
+          </div>
+
+          {/* Desktop Search */}
+          <div className="hidden md:block relative ml-auto mr-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input 
+                type="text"
+                placeholder="Search vehicles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                className="pl-9 pr-4 py-2 bg-muted/50 border-2 border-primary rounded-full text-sm focus:outline-none w-64 transition-all"
+              />
+            </div>
+            {isSearchFocused && searchQuery.length > 0 && searchResults.length > 0 && (
+              <div className="absolute top-full mt-2 w-full bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50">
+                {searchResults.slice(0, 5).map(vehicle => (
+                  <Link 
+                    key={vehicle.id} 
+                    href={`/vehicles/${vehicle.id}`}
+                    onClick={() => {
+                      setSearchQuery('')
+                      setIsSearchFocused(false)
+                    }}
+                    className="flex items-center gap-3 p-2 hover:bg-muted transition-colors border-b border-border last:border-0"
+                  >
+                    <img src={vehicle.image} alt={vehicle.name} className="w-10 h-10 object-cover rounded" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground line-clamp-1">{vehicle.name}</p>
+                      <p className="text-xs text-muted-foreground">${vehicle.price}/day</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+            {isSearchFocused && searchQuery.length > 0 && searchResults.length === 0 && (
+              <div className="absolute top-full mt-2 w-full bg-card border border-border rounded-lg shadow-lg p-4 text-center z-50">
+                <p className="text-sm text-muted-foreground">No vehicles found.</p>
+              </div>
+            )}
           </div>
 
           {/* Auth Buttons */}
@@ -166,13 +262,15 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Actions */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}

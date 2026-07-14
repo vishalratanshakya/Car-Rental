@@ -29,46 +29,36 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">Here&apos;s an overview of your account activity</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
         {stats.map((stat, index) => (
-          <div key={index} className={`bg-gradient-to-br ${stat.bgGradient} border-2 rounded-2xl p-6 transition-all hover:shadow-xl hover:scale-105 duration-300 relative overflow-hidden group`}>
+          <div key={index} className={`bg-gradient-to-br ${stat.bgGradient} border-2 rounded-2xl p-4 sm:p-6 transition-all hover:shadow-xl hover:scale-105 duration-300 relative overflow-hidden group`}>
             {/* Decorative background blob */}
             <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/40 blur-3xl rounded-full group-hover:scale-150 transition-transform duration-700 pointer-events-none mix-blend-overlay"></div>
             
-            <div className={`w-14 h-14 rounded-xl bg-background/80 backdrop-blur-md shadow-sm border border-border/50 flex items-center justify-center mb-4 relative z-10`}>
-              <stat.icon size={26} className={stat.color} />
+            <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-background/80 backdrop-blur-md shadow-sm border border-border/50 flex items-center justify-center mb-3 sm:mb-4 relative z-10`}>
+              <stat.icon className={`w-5 h-5 sm:w-7 sm:h-7 ${stat.color}`} />
             </div>
-            <p className="text-muted-foreground text-sm mb-2 font-medium relative z-10">{stat.label}</p>
-            <p className="text-3xl font-extrabold text-foreground relative z-10">{stat.value}</p>
+            <p className="text-muted-foreground text-xs sm:text-sm mb-1 sm:mb-2 font-medium relative z-10">{stat.label}</p>
+            <p className="text-2xl sm:text-3xl font-extrabold text-foreground relative z-10">{stat.value}</p>
           </div>
         ))}
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
-          <AlertCircle className="w-6 h-6 text-primary mb-3" />
-          <h3 className="font-semibold text-foreground mb-2">Verify Your License</h3>
-          <p className="text-sm text-muted-foreground mb-4">
-            Upload your driver&apos;s license to unlock premium features
-          </p>
-          <Link href="/dashboard/documents">
-            <Button variant="outline" size="sm">Upload Now</Button>
-          </Link>
-        </div>
-
-        <div className="bg-card border border-border rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-foreground">Rent a Vehicle</h3>
+      {!user?.verified && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-primary/10 border border-primary/20 rounded-lg p-6">
+            <AlertCircle className="w-6 h-6 text-primary mb-3" />
+            <h3 className="font-semibold text-foreground mb-2">Verify Your License</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Upload your driver&apos;s license to unlock premium features
+            </p>
+            <Link href="/dashboard/documents">
+              <Button variant="outline" size="sm">Upload Now</Button>
+            </Link>
           </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Browse our collection of premium vehicles
-          </p>
-          <Link href="/vehicles">
-            <Button size="sm" className="w-full">Start Renting</Button>
-          </Link>
         </div>
-      </div>
+      )}
 
       {/* Recent Bookings */}
       <div className="bg-card border border-border rounded-lg p-6">

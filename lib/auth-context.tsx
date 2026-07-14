@@ -7,7 +7,9 @@ import {
   createUserWithEmailAndPassword, 
   signOut, 
   onAuthStateChanged,
-  updateProfile as updateFirebaseAuthProfile
+  updateProfile as updateFirebaseAuthProfile,
+  GoogleAuthProvider,
+  signInWithPopup
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
@@ -27,6 +29,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   register: (name: string, email: string, phone: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (updates: Partial<User>) => Promise<void>;
@@ -97,6 +100,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signOut(auth);
   };
 
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const firebaseUser = result.user;
+    
+    const userDocRef = doc(db, 'users', firebaseUser.uid);
+    const userDoc = await getDoc(userDocRef);
+    
+    if (!userDoc.exists()) {
+      const newUser: User = {
+        id: firebaseUser.uid,
+        name: firebaseUser.displayName || 'User',
+        email: firebaseUser.email || '',
+        phone: '',
+        role: 'user',
+        avatar: firebaseUser.photoURL || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        verified: false,
+      };
+      await setDoc(userDocRef, newUser);
+      setUser(newUser);
+    } else {
+      setUser(userDoc.data() as User);
+    }
+  };
+
   const updateProfile = async (updates: Partial<User>) => {
     if (user) {
       const updatedUser = { ...user, ...updates };
@@ -106,7 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, register, logout, updateProfile, loading }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, loginWithGoogle, register, logout, updateProfile, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );
