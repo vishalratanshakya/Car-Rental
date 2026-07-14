@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Filter } from 'lucide-react'
 
 interface FilterPanelProps {
   onFiltersChange?: (filters: FilterState) => void
@@ -75,13 +75,15 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-card border border-border rounded-xl p-4 sm:p-6 h-fit lg:sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto custom-scrollbar"
+      className="bg-card border-t-4 border-t-primary border-x-border border-b-border rounded-xl p-4 sm:p-6 h-fit lg:sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto custom-scrollbar shadow-lg"
     >
       <div 
         className="flex justify-between items-center md:mb-6 cursor-pointer md:cursor-default"
         onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
       >
-        <h2 className="text-lg font-bold text-foreground">Filters</h2>
+        <h2 className="text-lg font-bold text-primary flex items-center gap-2">
+          <Filter size={20} /> Filters
+        </h2>
         <button 
           className="md:hidden p-1 bg-muted rounded-lg hover:bg-primary/20 transition-colors"
         >
@@ -104,7 +106,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
                 type="checkbox"
                 checked={filters.categories.includes(category.toLowerCase())}
                 onChange={() => toggleFilter('categories', category.toLowerCase())}
-                className="w-4 h-4 rounded border-border cursor-pointer"
+                className="w-4 h-4 rounded border-primary cursor-pointer accent-primary"
               />
               <span className="text-foreground text-sm">{category}</span>
             </label>
@@ -126,7 +128,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
             max="500"
             value={filters.priceRange[1]}
             onChange={(e) => updatePriceRange([filters.priceRange[0], parseInt(e.target.value)])}
-            className="w-full cursor-pointer"
+            className="w-full cursor-pointer accent-primary"
           />
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>${filters.priceRange[0]}</span>
@@ -149,7 +151,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
                 type="checkbox"
                 checked={filters.transmission.includes(trans.toLowerCase())}
                 onChange={() => toggleFilter('transmission', trans.toLowerCase())}
-                className="w-4 h-4 rounded border-border cursor-pointer"
+                className="w-4 h-4 rounded border-primary cursor-pointer accent-primary"
               />
               <span className="text-foreground text-sm">{trans}</span>
             </label>
@@ -171,7 +173,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
                 type="checkbox"
                 checked={filters.fuelType.includes(fuel.toLowerCase())}
                 onChange={() => toggleFilter('fuelType', fuel.toLowerCase())}
-                className="w-4 h-4 rounded border-border cursor-pointer"
+                className="w-4 h-4 rounded border-primary cursor-pointer accent-primary"
               />
               <span className="text-foreground text-sm">{fuel}</span>
             </label>
@@ -194,7 +196,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
                 name="rating"
                 checked={filters.rating === rating}
                 onChange={() => updateRating(rating)}
-                className="w-4 h-4 cursor-pointer"
+                className="w-4 h-4 cursor-pointer accent-primary"
               />
               <span className="text-foreground text-sm">
                 {rating.toFixed(1)}+ stars
@@ -224,7 +226,7 @@ export function FilterPanel({ onFiltersChange }: FilterPanelProps) {
             rating: 0,
           })
         }}
-        className="w-full mt-6 py-2 bg-muted hover:bg-primary hover:text-white text-foreground rounded-lg font-semibold transition-all"
+        className="w-full mt-6 py-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg font-semibold transition-all shadow-sm"
       >
         Reset Filters
       </motion.button>

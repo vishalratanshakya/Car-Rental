@@ -4,6 +4,7 @@ import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { SearchCard } from '@/components/search-card'
 import { VehicleCard } from '@/components/vehicle-card'
+import { Button } from '@/components/ui/button'
 
 import { FeatureGrid } from '@/components/feature-grid'
 import { Vehicle } from '@/lib/mock-data'
@@ -30,8 +31,8 @@ export default function Page() {
         ]);
         
         setFeaturedVehicles(available.slice(0, 6));
-        setMostPickedVehicles(all.sort((a, b) => b.reviews - a.reviews).slice(0, 3));
-        setPremiumBikes(bikes.slice(0, 3));
+        setMostPickedVehicles(all.sort((a, b) => b.reviews - a.reviews).slice(0, 4));
+        setPremiumBikes(bikes.slice(0, 4));
       } catch (error) {
         console.error("Error fetching homepage data:", error);
       } finally {
@@ -119,31 +120,35 @@ export default function Page() {
       {/* Featured Vehicles Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-card/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-end mb-8">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">Featured Vehicles</h2>
-              <p className="text-muted-foreground max-w-2xl">
+          <div className="flex justify-between items-end mb-6 sm:mb-8">
+            <div className="pr-4">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 sm:mb-4">Featured Vehicles</h2>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl hidden sm:block">
                 Explore our handpicked selection of top-rated vehicles perfectly suited for your next journey.
               </p>
             </div>
-            <Link href="/vehicles" className="hidden sm:flex items-center text-primary font-medium hover:text-primary/80 transition-colors group">
+            <Link href="/vehicles" className="flex items-center text-primary font-medium hover:text-primary/80 transition-colors group whitespace-nowrap mb-2 sm:mb-0">
               View All 
-              <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-1 sm:ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-96 bg-muted animate-pulse rounded-2xl"></div>
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className={`h-64 sm:h-96 bg-muted animate-pulse rounded-2xl ${i > 4 ? 'hidden sm:block' : ''}`}></div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredVehicles.map((vehicle) => (
-                <VehicleCard key={vehicle.id} vehicle={vehicle} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+                {featuredVehicles.map((vehicle, index) => (
+                  <div key={vehicle.id} className={index >= 4 ? 'hidden sm:block' : ''}>
+                    <VehicleCard vehicle={vehicle} />
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>
@@ -151,19 +156,27 @@ export default function Page() {
       {/* Most Picked Up Vehicles */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-foreground mb-8 text-center">Most Popular Cars</h2>
+          <div className="flex justify-between items-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Most Popular Cars</h2>
+            <Link href="/vehicles" className="flex items-center text-primary font-medium hover:text-primary/80 transition-colors group whitespace-nowrap">
+              View All 
+              <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-96 bg-muted animate-pulse rounded-2xl"></div>
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {mostPickedVehicles.map((vehicle) => (
-                <VehicleCard key={vehicle.id} vehicle={vehicle} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+                {mostPickedVehicles.map((vehicle) => (
+                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>
@@ -171,19 +184,27 @@ export default function Page() {
       {/* Premium Bikes & Scooters Section */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-foreground mb-8 text-center">Premium Two-Wheelers</h2>
+          <div className="flex justify-between items-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Premium Two-Wheelers</h2>
+            <Link href="/vehicles?category=bike" className="flex items-center text-primary font-medium hover:text-primary/80 transition-colors group whitespace-nowrap">
+              View All 
+              <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-96 bg-muted animate-pulse rounded-2xl"></div>
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {premiumBikes.map((vehicle) => (
-                <VehicleCard key={vehicle.id} vehicle={vehicle} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+                {premiumBikes.map((vehicle) => (
+                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>

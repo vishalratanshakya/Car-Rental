@@ -19,18 +19,14 @@ interface SearchCardProps {
 }
 
 const CITIES = [
-  'Delhi',
-  'Mumbai',
-  'Noida',
-  'Greater Noida',
-  'Gurgaon',
-  'Jaipur',
-  'Agra',
-  'Lucknow',
-  'Chandigarh',
-  'Bangalore',
-  'Pune',
-  'Hyderabad',
+  'Agra', 'Ahmedabad', 'Allahabad', 'Amritsar', 'Aurangabad', 'Bangalore', 
+  'Bhopal', 'Bhubaneswar', 'Chandigarh', 'Chennai', 'Coimbatore', 'Dehradun', 
+  'Delhi', 'Faridabad', 'Ghaziabad', 'Greater Noida', 'Gurgaon', 'Guwahati', 
+  'Gwalior', 'Hyderabad', 'Indore', 'Jabalpur', 'Jaipur', 'Jodhpur', 'Kanpur', 
+  'Kochi', 'Kolkata', 'Kota', 'Lucknow', 'Ludhiana', 'Madurai', 'Meerut', 
+  'Mumbai', 'Mysore', 'Nagpur', 'Nashik', 'Navi Mumbai', 'Noida', 'Patna', 
+  'Pune', 'Raipur', 'Rajkot', 'Ranchi', 'Surat', 'Thane', 'Thiruvananthapuram', 
+  'Udaipur', 'Vadodara', 'Varanasi', 'Visakhapatnam'
 ]
 
 const VEHICLE_TYPES = ['Car', 'Bike', 'Scooty', 'SUV', 'Electric']
@@ -114,7 +110,7 @@ export function SearchCard({ onSearch }: SearchCardProps) {
       <h2 className="text-3xl font-bold text-foreground mb-6">Find your perfect ride</h2>
       <div className="flex flex-col gap-5">
         {/* Search Location */}
-        <div>
+        <div className="relative">
           <label className="block text-sm font-semibold text-foreground mb-2">
             <MapPin size={16} className="inline mr-2 text-primary" />
             Search Location
@@ -125,13 +121,42 @@ export function SearchCard({ onSearch }: SearchCardProps) {
             value={params.city}
             onChange={(e) => {
               setParams({ ...params, city: e.target.value })
+              setCityFilter(e.target.value)
               setErrors({ ...errors, city: '' })
+              setCityDropdownOpen(true)
+            }}
+            onFocus={() => {
+              setCityFilter(params.city)
+              setCityDropdownOpen(true)
+            }}
+            onBlur={() => {
+              setTimeout(() => setCityDropdownOpen(false), 200)
             }}
             onKeyPress={handleKeyPress}
             className={`w-full px-4 py-3 bg-muted/50 border rounded-xl text-foreground focus:outline-none focus:ring-2 transition-all ${
               errors.city ? 'border-destructive focus:ring-destructive' : 'border-transparent focus:ring-primary'
             }`}
           />
+          {cityDropdownOpen && filteredCities.length > 0 && (
+            <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-xl shadow-lg max-h-60 overflow-auto">
+              {filteredCities.map((city) => (
+                <div
+                  key={city}
+                  className="px-4 py-3 hover:bg-muted cursor-pointer text-foreground transition-colors flex items-center"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    setParams({ ...params, city })
+                    setCityFilter(city)
+                    setCityDropdownOpen(false)
+                    setErrors({ ...errors, city: '' })
+                  }}
+                >
+                  <MapPin size={14} className="inline mr-2 text-muted-foreground" />
+                  {city}
+                </div>
+              ))}
+            </div>
+          )}
           {errors.city && (
             <p className="text-xs text-destructive mt-1 flex items-center gap-1">
               <AlertCircle size={14} />

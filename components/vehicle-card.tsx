@@ -19,6 +19,7 @@ export function VehicleCard({ vehicle, index = 0 }: VehicleCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
+  const [showWishlistPopup, setShowWishlistPopup] = useState(false)
   const { user } = useAuth()
   const router = useRouter()
 
@@ -34,7 +35,7 @@ export function VehicleCard({ vehicle, index = 0 }: VehicleCardProps) {
       <Link href={`/vehicles/${vehicle.id}`}>
         <div className="bg-card rounded-3xl overflow-hidden border border-border hover:shadow-2xl transition-all duration-300 h-full flex flex-col group cursor-pointer">
           {/* Image Container */}
-          <div className="relative h-48 bg-muted overflow-hidden">
+          <div className="relative h-32 sm:h-48 bg-muted overflow-hidden">
             <Image
               src={vehicle.image}
               alt={vehicle.name}
@@ -69,21 +70,34 @@ export function VehicleCard({ vehicle, index = 0 }: VehicleCardProps) {
                   return
                 }
                 setIsFavorite(!isFavorite)
+                setShowWishlistPopup(true)
+                setTimeout(() => setShowWishlistPopup(false), 2000)
               }}
-              className="absolute top-3 right-3 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all cursor-pointer"
+              className="absolute top-3 right-3 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all cursor-pointer z-20"
             >
               <Heart
                 size={20}
                 className={isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}
               />
             </motion.div>
+
+            {/* Wishlist Popup */}
+            {showWishlistPopup && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="absolute top-14 right-3 bg-black/80 text-white text-[10px] sm:text-xs px-3 py-1.5 rounded-full z-10 font-medium"
+              >
+                {isFavorite ? 'Added to Wishlist' : 'Removed from Wishlist'}
+              </motion.div>
+            )}
           </div>
 
           {/* Content */}
-          <div className="p-4 flex-1 flex flex-col justify-between">
+          <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
             {/* Title and Rating */}
             <div>
-              <h3 className="text-lg font-bold text-foreground mb-2">{vehicle.name}</h3>
+              <h3 className="text-base sm:text-lg font-bold text-foreground mb-1 sm:mb-2 line-clamp-1">{vehicle.name}</h3>
               <div className="flex items-center gap-2 mb-3">
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
@@ -101,7 +115,7 @@ export function VehicleCard({ vehicle, index = 0 }: VehicleCardProps) {
               </div>
 
               {/* Specs */}
-              <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground mb-3">
+              <div className="grid grid-cols-2 gap-1 sm:gap-2 text-[10px] sm:text-sm text-muted-foreground mb-2 sm:mb-3">
                 <div className="flex items-center gap-1">
                   <span className="font-semibold">{vehicle.year}</span>
                   <span>•</span>
@@ -116,29 +130,29 @@ export function VehicleCard({ vehicle, index = 0 }: VehicleCardProps) {
             </div>
 
             {/* Features */}
-            <div className="flex gap-2 mb-4 flex-wrap">
+            <div className="flex gap-1 sm:gap-2 mb-3 sm:mb-4 flex-wrap">
               {vehicle.features.slice(0, 2).map((feature) => (
-                <span key={feature} className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
+                <span key={feature} className="text-[10px] sm:text-xs bg-muted text-muted-foreground px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
                   {feature}
                 </span>
               ))}
               {vehicle.features.length > 2 && (
-                <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
+                <span className="text-[10px] sm:text-xs bg-muted text-muted-foreground px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
                   +{vehicle.features.length - 2}
                 </span>
               )}
             </div>
 
             {/* Pricing Section */}
-            <div className="border-t border-border pt-4 mb-4">
-              <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+            <div className="border-t border-border pt-3 sm:pt-4 mb-3 sm:mb-4">
+              <div className="grid grid-cols-2 gap-2 text-sm mb-2 sm:mb-4">
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-1">12 Hours</span>
-                  <span className="text-lg font-bold text-foreground">₹{Math.round(vehicle.price * 20)}</span>
+                  <span className="text-[10px] sm:text-xs text-muted-foreground block mb-0.5 sm:mb-1">12 Hours</span>
+                  <span className="text-sm sm:text-lg font-bold text-foreground">₹{Math.round(vehicle.price * 20)}</span>
                 </div>
                 <div>
-                  <span className="text-xs text-muted-foreground block mb-1">24 Hours</span>
-                  <span className="text-lg font-bold text-foreground">₹{Math.round(vehicle.price * 36)}</span>
+                  <span className="text-[10px] sm:text-xs text-muted-foreground block mb-0.5 sm:mb-1">24 Hours</span>
+                  <span className="text-sm sm:text-lg font-bold text-foreground">₹{Math.round(vehicle.price * 36)}</span>
                 </div>
               </div>
             </div>
@@ -151,14 +165,9 @@ export function VehicleCard({ vehicle, index = 0 }: VehicleCardProps) {
                 if (!user) {
                   e.preventDefault()
                   setShowLoginModal(true)
-                  return
-                }
-                if (!user.verified) {
-                  e.preventDefault()
-                  setShowVerificationModal(true)
                 }
               }}
-              className={`w-full py-3 rounded-lg font-semibold transition-all text-sm text-center flex items-center justify-center ${
+              className={`w-full py-2 sm:py-3 rounded-lg font-semibold transition-all text-xs sm:text-sm text-center flex items-center justify-center ${
                 vehicle.available
                   ? 'bg-gradient-to-r from-primary to-accent text-white hover:shadow-lg'
                   : 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
