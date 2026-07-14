@@ -47,7 +47,7 @@ export default function BookingDetailsPage() {
   return (
     <div className="p-4 md:p-8 w-full mx-auto">
       {/* Back Button */}
-      <Link href="/dashboard/bookings" className="flex items-center text-primary hover:text-primary/80 mb-6 font-medium">
+      <Link href="/dashboard/bookings" className="flex items-center text-primary hover:text-primary/80 mb-6 font-medium print:hidden">
         <ArrowLeft size={20} className="mr-2" />
         Back to Bookings
       </Link>
@@ -152,7 +152,7 @@ export default function BookingDetailsPage() {
       </div>
 
       {/* Actions */}
-      <div className="flex gap-4">
+      <div className="flex gap-4 print:hidden">
         <Button variant="outline" className="flex-1" onClick={() => window.print()}>
           <Download size={18} className="mr-2" />
           Download Invoice

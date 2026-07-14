@@ -68,11 +68,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   return (
-    <div className="flex h-screen bg-background">
+    <div className="flex h-screen bg-background print:h-auto">
       {/* Sidebar */}
       <aside className={`${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0 fixed lg:static w-64 h-screen bg-card border-r border-border overflow-y-auto transition-transform duration-300 z-40`}>
+      } lg:translate-x-0 fixed lg:static w-64 h-screen bg-card border-r border-border overflow-y-auto transition-transform duration-300 z-40 print:hidden`}>
         <div className="p-6 border-b border-border">
           <h1 className="text-2xl font-bold text-primary">DriveHub</h1>
           <p className="text-xs text-muted-foreground mt-1">{isAdmin ? 'Admin Panel' : 'User Portal'}</p>
@@ -123,9 +123,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden print:overflow-visible">
         {/* Top Navigation */}
-        <header className="bg-card border-b border-border p-4 flex items-center justify-between">
+        <header className="bg-card border-b border-border p-4 flex items-center justify-between print:hidden">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors"
@@ -144,7 +144,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto print:overflow-visible">
           {children}
         </main>
       </div>
