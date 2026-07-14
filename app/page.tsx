@@ -30,7 +30,7 @@ export default function Page() {
           getVehiclesByCategory('bike')
         ]);
         
-        setFeaturedVehicles(available.slice(0, 6));
+        setFeaturedVehicles(available.slice(0, 4));
         setMostPickedVehicles(all.sort((a, b) => b.reviews - a.reviews).slice(0, 4));
         setPremiumBikes(bikes.slice(0, 4));
       } catch (error) {
@@ -134,16 +134,16 @@ export default function Page() {
           </div>
 
           {isLoading ? (
-            <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className={`w-[85vw] flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl ${i > 4 ? 'hidden sm:block' : ''}`}></div>
+            <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className={`w-full flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl`}></div>
               ))}
             </div>
           ) : (
             <>
-              <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {featuredVehicles.map((vehicle, index) => (
-                  <div key={vehicle.id} className={`w-[85vw] flex-shrink-0 sm:w-auto snap-center ${index >= 4 ? 'hidden sm:block' : ''}`}>
+                  <div key={vehicle.id} className={`w-full flex-shrink-0 sm:w-auto snap-center`}>
                     <VehicleCard vehicle={vehicle} />
                   </div>
                 ))}
@@ -166,14 +166,14 @@ export default function Page() {
           {isLoading ? (
             <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
+                <div key={i} className="w-full flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
               ))}
             </div>
           ) : (
             <>
               <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {mostPickedVehicles.map((vehicle) => (
-                  <div key={vehicle.id} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center">
+                  <div key={vehicle.id} className="w-full flex-shrink-0 sm:w-auto snap-center">
                     <VehicleCard vehicle={vehicle} />
                   </div>
                 ))}
@@ -196,14 +196,14 @@ export default function Page() {
           {isLoading ? (
             <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
+                <div key={i} className="w-full flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
               ))}
             </div>
           ) : (
             <>
               <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {premiumBikes.map((vehicle) => (
-                  <div key={vehicle.id} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center">
+                  <div key={vehicle.id} className="w-full flex-shrink-0 sm:w-auto snap-center">
                     <VehicleCard vehicle={vehicle} />
                   </div>
                 ))}
