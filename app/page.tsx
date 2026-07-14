@@ -134,16 +134,16 @@ export default function Page() {
           </div>
 
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+            <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className={`h-64 sm:h-96 bg-muted animate-pulse rounded-2xl ${i > 4 ? 'hidden sm:block' : ''}`}></div>
+                <div key={i} className={`w-[85vw] flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl ${i > 4 ? 'hidden sm:block' : ''}`}></div>
               ))}
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+              <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {featuredVehicles.map((vehicle, index) => (
-                  <div key={vehicle.id} className={index >= 4 ? 'hidden sm:block' : ''}>
+                  <div key={vehicle.id} className={`w-[85vw] flex-shrink-0 sm:w-auto snap-center ${index >= 4 ? 'hidden sm:block' : ''}`}>
                     <VehicleCard vehicle={vehicle} />
                   </div>
                 ))}
@@ -164,16 +164,18 @@ export default function Page() {
             </Link>
           </div>
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+            <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
+                <div key={i} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
               ))}
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+              <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {mostPickedVehicles.map((vehicle) => (
-                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                  <div key={vehicle.id} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center">
+                    <VehicleCard vehicle={vehicle} />
+                  </div>
                 ))}
               </div>
             </>
@@ -192,16 +194,18 @@ export default function Page() {
             </Link>
           </div>
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+            <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
+                <div key={i} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center h-64 sm:h-96 bg-muted animate-pulse rounded-2xl"></div>
               ))}
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
+              <div className="flex overflow-x-auto pb-6 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {premiumBikes.map((vehicle) => (
-                  <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                  <div key={vehicle.id} className="w-[85vw] flex-shrink-0 sm:w-auto snap-center">
+                    <VehicleCard vehicle={vehicle} />
+                  </div>
                 ))}
               </div>
             </>
