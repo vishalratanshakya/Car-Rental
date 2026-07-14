@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Calendar, MapPin, Users, Clock, Eye, Download, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getUserBookings, Booking } from '@/lib/firestore-data';
+import { listenUserBookings, Booking } from '@/lib/firestore-data';
 import { useAuth } from '@/lib/auth-context';
 
 export default function BookingsPage() {
@@ -14,14 +14,15 @@ export default function BookingsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function loadBookings() {
-      if (user) {
-        const data = await getUserBookings(user.id);
+    if (user) {
+      const unsubscribe = listenUserBookings(user.id, (data) => {
         setBookings(data);
-      }
+        setIsLoading(false);
+      });
+      return () => unsubscribe();
+    } else {
       setIsLoading(false);
     }
-    loadBookings();
   }, [user]);
 
   const filteredBookings = selectedStatus === 'all'

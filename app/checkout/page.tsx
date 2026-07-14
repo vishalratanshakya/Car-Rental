@@ -59,7 +59,7 @@ export default function CheckoutPage() {
     
     const finalTotal = bookingData.totalPrice + gst + securityDeposit;
     
-    await createBooking({
+    const bookingId = await createBooking({
       userId: user.id,
       vehicleId: bookingData.vehicleId,
       vehicle: bookingData.vehicleName,
@@ -71,8 +71,14 @@ export default function CheckoutPage() {
       createdAt: new Date().toISOString()
     });
 
-    sessionStorage.removeItem('bookingData');
-    router.push('/dashboard/bookings');
+    if (bookingId) {
+      sessionStorage.removeItem('bookingData');
+      router.refresh();
+      router.push('/dashboard/bookings');
+    } else {
+      alert("Failed to create booking. Please try again.");
+      setIsProcessing(false);
+    }
   };
 
   if (isLoading || !bookingData) {

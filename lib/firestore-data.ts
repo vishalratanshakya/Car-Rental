@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, query, where, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, query, where, deleteDoc, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase';
 import { Vehicle } from './mock-data'; // Keep interface
 
@@ -14,7 +14,7 @@ export interface Booking {
   image: string;
   createdAt: string;
 }
-import { Vehicle } from './mock-data'; // Keep interface
+
 
 export async function getVehicles(): Promise<Vehicle[]> {
   try {
@@ -97,6 +97,20 @@ export async function getUserBookings(userId: string): Promise<Booking[]> {
     console.error('Error fetching bookings:', error);
     return [];
   }
+}
+
+export function listenUserBookings(userId: string, callback: (bookings: Booking[]) => void) {
+  const q = query(collection(db, 'bookings'), where('userId', '==', userId));
+  return onSnapshot(q, (querySnapshot) => {
+    const bookings: Booking[] = [];
+    querySnapshot.forEach((doc) => {
+      bookings.push({ id: doc.id, ...doc.data() } as Booking);
+    });
+    callback(bookings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
+  }, (error) => {
+    console.error('Error listening to bookings:', error);
+    callback([]);
+  });
 }
 
 export async function toggleWishlist(userId: string, vehicleId: string): Promise<boolean> {
